@@ -3,6 +3,7 @@ package br.ceavi.udesc.dsd;
 import br.ceavi.udesc.dsd.view.TelaPrincipal;
 
 /**
+ * 
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  */
 public class Main {
