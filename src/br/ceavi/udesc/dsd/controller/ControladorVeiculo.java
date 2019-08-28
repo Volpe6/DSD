@@ -1,6 +1,7 @@
 package br.ceavi.udesc.dsd.controller;
 
 import br.ceavi.udesc.dsd.model.Veiculo;
+import java.awt.Point;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -9,20 +10,22 @@ import br.ceavi.udesc.dsd.model.Veiculo;
  */
 public class ControladorVeiculo implements Runnable {
 
-	private Veiculo veiculo;
+    private Veiculo veiculo;
 
-	public ControladorVeiculo(){
+    public ControladorVeiculo() {
+        this.veiculo = new Veiculo();
+    }
 
-	}
+    public Point getPosicaoVeiculo() {
+        return this.veiculo.getPosicao();
+    }
 
-	public void finalize() throws Throwable {
+    public void moveVeiculo() {
 
-	}
-	public Point getPosicaoVeiculo(){
-		return null;
-	}
+    }
 
-	public void moveVeiculo(){
+    @Override
+    public void run() {
 
-	}
-}//end ControladorVeiculo
+    }
+}

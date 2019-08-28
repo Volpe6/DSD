@@ -9,18 +9,10 @@ import br.ceavi.udesc.dsd.model.Veiculo;
  */
 public interface ObservadorMalha {
 
-	public void malhaCarregada();
+    public void malhaCarregada();
 
-	/**
-	 * 
-	 * @param veiculo
-	 */
-	public void veiculoCriado(Veiculo veiculo);
+    public void veiculoCriado(Veiculo veiculo);
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public void veiculoRemovido(String id);
+    public void veiculoRemovido(String id);
 
 }

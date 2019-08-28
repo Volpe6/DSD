@@ -1,6 +1,5 @@
 package br.ceavi.udesc.dsd.view;
 
-
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
@@ -8,13 +7,10 @@ package br.ceavi.udesc.dsd.view;
  */
 public class DesenhoNodo extends Desenho {
 
-	private String id;
+    private String id;
 
-	public DesenhoNodo(){
+    public DesenhoNodo() {
 
-	}
+    }
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-}//end DesenhoNodo
+}

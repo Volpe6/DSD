@@ -12,7 +12,4 @@ public class NodoSemaforo extends Nodo {
 
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-}//end NodoSemaforo
+}

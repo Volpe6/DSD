@@ -1,5 +1,6 @@
 package br.ceavi.udesc.dsd.view;
 
+import javax.swing.JFrame;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -8,13 +9,10 @@ package br.ceavi.udesc.dsd.view;
  */
 public class TelaConfiguracoes extends JFrame {
 
-	public PainelConfiguracoes configuracao;
+    public PainelConfiguracoes configuracao;
 
-	public TelaConfiguracoes(){
+    public TelaConfiguracoes() {
 
-	}
+    }
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-}//end TelaConfiguracoes
+}

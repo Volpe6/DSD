@@ -1,6 +1,5 @@
 package br.ceavi.udesc.dsd.model;
 
-
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
@@ -8,18 +7,15 @@ package br.ceavi.udesc.dsd.model;
  */
 public class FactoryElementos {
 
-	public FactoryElementos(){
+    public FactoryElementos() {
+        
+    }
 
-	}
+    public Nodo criaNodoMonitor() {
+        return null;
+    }
 
-	public void finalize() throws Throwable {
-
-	}
-	public Nodo criaNodoMonitor(){
-		return null;
-	}
-
-	public Nodo criaNodoSemaforo(){
-		return null;
-	}
-}//end FactoryElementos
+    public Nodo criaNodoSemaforo() {
+        return null;
+    }
+}

@@ -9,16 +9,13 @@ import br.ceavi.udesc.dsd.model.Configuracoes;
  */
 public class ControladorConfiguracoes {
 
-	private Configuracoes configuracoes;
+    private Configuracoes configuracoes;
 
-	public ControladorConfiguracoes(){
+    public ControladorConfiguracoes() {
+        this.configuracoes = new Configuracoes();
+    }
 
-	}
+    public void salvaConfiguracoes() {
 
-	public void finalize() throws Throwable {
-
-	}
-	public void salvaConfiguracoes(){
-
-	}
-}//end ControladorConfiguracoes
+    }
+}

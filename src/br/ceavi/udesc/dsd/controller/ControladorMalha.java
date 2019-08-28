@@ -1,6 +1,9 @@
 package br.ceavi.udesc.dsd.controller;
 
 import br.ceavi.udesc.dsd.model.Malha;
+import br.ceavi.udesc.dsd.model.Nodo;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -9,49 +12,43 @@ import br.ceavi.udesc.dsd.model.Malha;
  */
 public class ControladorMalha implements Runnable {
 
-	private String malha;
-	private Malha modelMalha;
+    private String malha;
+    private Malha modelMalha;
 
-	public ControladorMalha(){
+    public ControladorMalha() {
 
-	}
+    }
 
-	public void finalize() throws Throwable {
+    public void carregaMalha(String malha) {
 
-	}
-	/**
-	 * 
-	 * @param malha
-	 */
-	public void carregaMalha(String malha){
+    }
 
-	}
+    public void criaVeiculo() {
 
-	public void criaVeiculo(){
+    }
 
-	}
+    public void finalizaSimulacao() {
 
-	public void finalizaSimulacao(){
+    }
 
-	}
+    public String[] getAllNodos() {
+        return null;
+    }
 
-	public String[] getAllNodos(){
-		return null;
-	}
+    public void getNodo(String id) {
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public void getNodo(String id){
+    }
 
-	}
+    public void iniciaSimulacao() {
 
-	public void iniciaSimulacao(){
+    }
 
-	}
+    public void recarregaMalha() {
 
-	public void recarregaMalha(){
+    }
 
-	}
-}//end ControladorMalha
+    @Override
+    public void run() {
+        
+    }
+}

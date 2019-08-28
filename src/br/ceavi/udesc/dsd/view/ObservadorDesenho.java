@@ -1,6 +1,5 @@
 package br.ceavi.udesc.dsd.view;
 
-
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
@@ -8,6 +7,6 @@ package br.ceavi.udesc.dsd.view;
  */
 public interface ObservadorDesenho {
 
-	public void desenhoAlterado();
+    public void desenhoAlterado();
 
 }

@@ -1,6 +1,5 @@
 package br.ceavi.udesc.dsd.view;
 
-
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
@@ -8,18 +7,16 @@ package br.ceavi.udesc.dsd.view;
  */
 public abstract class Desenho implements ObservadorDesenho {
 
-	public Desenho(){
+    public Desenho() {
 
-	}
+    }
 
-	public void finalize() throws Throwable {
+    public void desenha() {
 
-	}
-	public void desenha(){
+    }
 
-	}
+    @Override
+    public void desenhoAlterado() {
 
-	public void desenhoAlterado(){
-
-	}
-}//end Desenho
+    }
+}

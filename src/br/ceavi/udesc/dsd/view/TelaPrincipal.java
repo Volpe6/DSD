@@ -1,5 +1,7 @@
 package br.ceavi.udesc.dsd.view;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -8,21 +10,18 @@ package br.ceavi.udesc.dsd.view;
  */
 public class TelaPrincipal extends JFrame {
 
-	private JButton botaoConfiguracao;
-	private JButton botaoFinalizar;
-	private JButton botaoIniciar;
-	private JButton botaoNovaMalha;
-	public PainelMalha malha;
-	public TelaConfiguracoes telaConfiguracao;
+    private JButton botaoConfiguracao;
+    private JButton botaoFinalizar;
+    private JButton botaoIniciar;
+    private JButton botaoNovaMalha;
+    public PainelMalha malha;
+    public TelaConfiguracoes telaConfiguracao;
 
-	public TelaPrincipal(){
+    public TelaPrincipal() {
 
-	}
+    }
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-	public void exibeTelaConfiguracao(){
+    public void exibeTelaConfiguracao() {
 
-	}
-}//end TelaPrincipal
+    }
+}

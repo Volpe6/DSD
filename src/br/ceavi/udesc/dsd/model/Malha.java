@@ -1,5 +1,9 @@
 package br.ceavi.udesc.dsd.model;
 
+import br.ceavi.udesc.dsd.view.ObservadorDesenho;
+import br.ceavi.udesc.dsd.view.ObservadorMalha;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -8,49 +12,64 @@ package br.ceavi.udesc.dsd.model;
  */
 public class Malha implements ObservadoMalha, ObservadoDesenho {
 
-	public Configuracoes configuracao;
-	public Nodo nodos;
+    private Configuracoes configuracao;
+    private List<Nodo> nodos;
+    private List<ObservadorMalha> obsMalha;
+    private List<ObservadorDesenho> obsDesenho;
 
-	public Malha(){
+    public Malha() {
+        this.configuracao = new Configuracoes();
+    }
 
-	}
+    public void criaVeiculo() {
 
-	public void finalize() throws Throwable {
+    }
 
-	}
-	public void criaVeiculo(){
+    public void recriaNodos(String malha) {
+        this.nodos = new ArrayList<Nodo>();
+    }
 
-	}
+    public Configuracoes getConfiguracao() {
+        return configuracao;
+    }
 
-	/**
-	 * 
-	 * @param malha
-	 */
-	public void recriaNodos(String malha){
+    public List<Nodo> getNodos() {
+        return this.nodos;
+    }
+    
+    public void adicionaObsMalha(ObservadorMalha obs){
+        this.obsMalha.add(obs);
+    }
+    
+    public void adicionaObsDesenho(ObservadorDesenho obs){
+        this.obsDesenho.add(obs);
+    }
 
-	}
+    @Override
+    public void notificaMalhaCarregada() {
+        this.obsMalha.forEach((obs) -> {
+            obs.malhaCarregada();
+        });
+    }
 
-	public void notificaMalhaCarregada(){
+    @Override
+    public void notificaVeiculoCriado(Veiculo veiculo) {
+        this.obsMalha.forEach((obs) -> {
+            obs.veiculoCriado(veiculo);
+        });
+    }
 
-	}
+    @Override
+    public void notificaVeiculoRemovido(String id) {
+        this.obsMalha.forEach((obs) -> {
+            obs.veiculoRemovido(id);
+        });
+    }
 
-	/**
-	 * 
-	 * @param veiculo
-	 */
-	public void notificaVeiculoCriado(Veiculo veiculo){
-
-	}
-
-	/**
-	 * 
-	 * @param id
-	 */
-	public void notificaVeiculoRemovido(String id){
-
-	}
-
-	public void notificaDesenhoAlterado(){
-
-	}
-}//end Malha
+    @Override
+    public void notificaDesenhoAlterado() {
+        this.obsDesenho.forEach((obs) -> {
+            obs.desenhoAlterado();
+        });
+    }
+}

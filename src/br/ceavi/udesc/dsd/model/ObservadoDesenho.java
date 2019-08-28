@@ -1,6 +1,5 @@
 package br.ceavi.udesc.dsd.model;
 
-
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
@@ -8,6 +7,6 @@ package br.ceavi.udesc.dsd.model;
  */
 public interface ObservadoDesenho {
 
-	public void notificaDesenhoAlterado();
+    public void notificaDesenhoAlterado();
 
 }

@@ -1,6 +1,8 @@
 package br.ceavi.udesc.dsd;
 
 import br.ceavi.udesc.dsd.view.TelaPrincipal;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * 
@@ -12,8 +14,13 @@ public class Main {
     private boolean rodando;
     private TelaPrincipal tela;
 
-    private void Main() {
+    private Main() {
         this.rodando = false;
+    }
+
+    private void inicia() {
+        TelaPrincipal oTela = new TelaPrincipal();
+        oTela.setVisible(true);
     }
 
     public static Main getInstance() {
@@ -31,19 +38,14 @@ public class Main {
         return rodando;
     }
 
-    /**
-     *
-     * @param args
-     */
     public static void main(String[] args) {
-
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {}
+        Main.getInstance().inicia();
     }
 
-    /**
-     *
-     * @param newVal
-     */
     public void setRodando(boolean newVal) {
         rodando = newVal;
     }
-}//end Main
+}

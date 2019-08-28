@@ -1,6 +1,5 @@
 package br.ceavi.udesc.dsd.model;
 
-
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
@@ -8,18 +7,10 @@ package br.ceavi.udesc.dsd.model;
  */
 public interface ObservadoMalha {
 
-	public void notificaMalhaCarregada();
+    public void notificaMalhaCarregada();
 
-	/**
-	 * 
-	 * @param veiculo
-	 */
-	public void notificaVeiculoCriado(Veiculo veiculo);
+    public void notificaVeiculoCriado(Veiculo veiculo);
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public void notificaVeiculoRemovido(String id);
+    public void notificaVeiculoRemovido(String id);
 
 }

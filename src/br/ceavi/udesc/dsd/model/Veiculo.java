@@ -1,5 +1,8 @@
 package br.ceavi.udesc.dsd.model;
 
+import br.ceavi.udesc.dsd.view.ObservadorDesenho;
+import java.awt.Point;
+import java.util.List;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -8,17 +11,26 @@ package br.ceavi.udesc.dsd.model;
  */
 public class Veiculo implements ObservadoDesenho {
 
-	private String id;
-	private Nodo nodoAtual;
+    private String id;
+    private Nodo nodoAtual;
+    private List<ObservadorDesenho> observadores;
 
-	public Veiculo(){
+    public Veiculo() {
 
-	}
+    }
+    
+    public void addObservador(ObservadorDesenho obs){
+        this.observadores.add(obs);
+    }
 
-	public void finalize() throws Throwable {
+    @Override
+    public void notificaDesenhoAlterado() {
+        this.observadores.forEach((obs) -> {
+            obs.desenhoAlterado();
+        });
+    }
 
-	}
-	public void notificaDesenhoAlterado(){
-
-	}
-}//end Veiculo
+    public Point getPosicao() {
+        return null;
+    }
+}

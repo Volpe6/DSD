@@ -9,13 +9,9 @@ import br.ceavi.udesc.dsd.controller.ControladorVeiculo;
  */
 public class DesenhoVeiculo extends Desenho {
 
-	private ControladorVeiculo controlador;
+    private ControladorVeiculo controlador;
 
-	public DesenhoVeiculo(){
+    public DesenhoVeiculo() {
 
-	}
-
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-}//end DesenhoVeiculo
+    }
+}

@@ -11,8 +11,4 @@ public class NodoMonitor extends Nodo {
 	public NodoMonitor(){
 
 	}
-
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-}//end NodoMonitor
+}
