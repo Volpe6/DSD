@@ -2,6 +2,7 @@ package br.ceavi.udesc.dsd.view;
 
 import br.ceavi.udesc.dsd.controller.ControladorMalha;
 import br.ceavi.udesc.dsd.model.Veiculo;
+import java.awt.Color;
 import javax.swing.JPanel;
 
 /**
@@ -16,11 +17,11 @@ public class PainelMalha extends JPanel implements ObservadorConfiguracoes, Obse
     public DesenhoNodo nodos;
 
     public PainelMalha() {
-
+        this.iniciaConfiguracoesPainel();
     }
-
-    public void finalize() throws Throwable {
-        super.finalize();
+    
+    private void iniciaConfiguracoesPainel(){
+        this.setBackground(Color.WHITE);
     }
 
     public void finalizaSimulacao() {
