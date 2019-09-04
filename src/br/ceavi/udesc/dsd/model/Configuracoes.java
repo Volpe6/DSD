@@ -12,7 +12,7 @@ import java.util.List;
 public class Configuracoes implements ObservadoConfiguracao {
 
     private int qtdVeiculos;
-    private int tipoMonitoracao;
+    private TipoMonitoracao tipoMonitoracao;
     private List<ObservadorConfiguracoes> observadores = new ArrayList<>();
 
     public Configuracoes() {
@@ -27,11 +27,11 @@ public class Configuracoes implements ObservadoConfiguracao {
         this.qtdVeiculos = qtdVeiculos;
     }
 
-    public int getTipoMonitoracao() {
+    public TipoMonitoracao getTipoMonitoracao() {
         return tipoMonitoracao;
     }
 
-    public void setTipoMonitoracao(int tipoMonitoracao) {
+    public void setTipoMonitoracao(TipoMonitoracao tipoMonitoracao) {
         this.tipoMonitoracao = tipoMonitoracao;
     }
     

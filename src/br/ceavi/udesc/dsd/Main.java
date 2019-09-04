@@ -10,6 +10,9 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Main {
 
+    public static final int TEMPO_ATUALIZACAO = 33; // 30 Atualizações por segundo
+    public static final String TITULO_APP = "Malha Viária"; // 30 Atualizações por segundo
+    
     private static Main instance;
     private boolean rodando;
     private TelaPrincipal tela;

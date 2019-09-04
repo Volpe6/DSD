@@ -14,18 +14,39 @@ public class Malha implements ObservadoMalha, ObservadoDesenho {
 
     private Configuracoes configuracao;
     private List<Nodo> nodos;
+    private List<Veiculo> veiculos;
     private List<ObservadorMalha> obsMalha;
     private List<ObservadorDesenho> obsDesenho;
 
     public Malha() {
         this.configuracao = new Configuracoes();
+        this.veiculos = new ArrayList<>();
     }
 
     public void criaVeiculo() {
-
+        
+    }
+    
+    public int getTotalVeiculos(){
+        return this.veiculos.size();
+    }
+    
+    public void limpaVeiculos(){
+        // Percorer todos os veiculos, removendo eles do nodo e vice-versa, também notifica a visão através do Veiculo:notificaDesenhoAlterado
+        this.veiculos = new ArrayList<>();
     }
 
     public void recriaNodos(String malha) {
+        // Possibilidade de usar Factory.
+        switch(this.getConfiguracao().getTipoMonitoracao()){
+            case MONITOR:
+                // Cria o nodo como monitor
+                break;
+            case SEMAFORO:
+            default:
+                //Cria como semáforo
+                break;
+        }
         this.nodos = new ArrayList<Nodo>();
     }
 

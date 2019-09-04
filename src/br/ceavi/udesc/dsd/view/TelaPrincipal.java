@@ -1,13 +1,20 @@
 package br.ceavi.udesc.dsd.view;
 
+import br.ceavi.udesc.dsd.Main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -24,6 +31,7 @@ public class TelaPrincipal extends JFrame {
     public TelaConfiguracoes telaConfiguracao;
 
     public TelaPrincipal() {
+        super(Main.TITULO_APP);
         this.iniciaConfiguracoesTela();
         this.iniciaComponentesTela();
     }
@@ -61,6 +69,21 @@ public class TelaPrincipal extends JFrame {
         painelConfiguracao.setBackground(new Color(225, 225, 225));
         painelConfiguracao.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, new Color(240, 240, 240)));
         this.add(painelConfiguracao);
+        
+        JFileChooser escolheMalha = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivo de malha", "txt");
+        escolheMalha.setFileFilter(filter);
+        botaoNovaMalha.addActionListener((ActionEvent e) -> {
+            int retorno = escolheMalha.showOpenDialog(this);
+            if(retorno == JFileChooser.APPROVE_OPTION) {
+                File arquivo = escolheMalha.getSelectedFile();
+                try {
+                    malha.recriaMalha(arquivo);
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(painelConfiguracao, "Arquivo não encontrado ou não pode ser lido.");
+                }
+            }
+        });
         
         this.malha = new PainelMalha();
         this.add(this.malha);

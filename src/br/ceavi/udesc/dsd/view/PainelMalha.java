@@ -3,6 +3,8 @@ package br.ceavi.udesc.dsd.view;
 import br.ceavi.udesc.dsd.controller.ControladorMalha;
 import br.ceavi.udesc.dsd.model.Veiculo;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.JPanel;
 
 /**
@@ -17,6 +19,7 @@ public class PainelMalha extends JPanel implements ObservadorConfiguracoes, Obse
     public DesenhoNodo nodos;
 
     public PainelMalha() {
+        this.controlador = new ControladorMalha();
         this.iniciaConfiguracoesPainel();
     }
     
@@ -36,8 +39,8 @@ public class PainelMalha extends JPanel implements ObservadorConfiguracoes, Obse
 
     }
 
-    public void recriaMalha(String malha) {
-
+    public void recriaMalha(File arquivoMalha) throws FileNotFoundException {
+        this.controlador.carregaMalha(arquivoMalha);
     }
 
     @Override
