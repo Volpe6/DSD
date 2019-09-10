@@ -1,4 +1,6 @@
-package br.ceavi.udesc.dsd.model;
+package br.ceavi.udesc.dsd.controller;
+
+import br.ceavi.udesc.dsd.model.Veiculo;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
@@ -9,7 +11,7 @@ public interface ObservadoMalha {
 
     public void notificaMalhaCarregada();
 
-    public void notificaVeiculoCriado(Veiculo veiculo);
+    public void notificaVeiculoCriado(ControladorVeiculo veiculo);
 
     public void notificaVeiculoRemovido(String id);
 

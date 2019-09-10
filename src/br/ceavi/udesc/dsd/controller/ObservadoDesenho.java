@@ -1,4 +1,4 @@
-package br.ceavi.udesc.dsd.model;
+package br.ceavi.udesc.dsd.controller;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz

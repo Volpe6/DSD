@@ -1,5 +1,6 @@
 package br.ceavi.udesc.dsd.view;
 
+import br.ceavi.udesc.dsd.controller.ControladorVeiculo;
 import br.ceavi.udesc.dsd.model.Veiculo;
 
 /**
@@ -11,7 +12,7 @@ public interface ObservadorMalha {
 
     public void malhaCarregada();
 
-    public void veiculoCriado(Veiculo veiculo);
+    public void veiculoCriado(ControladorVeiculo veiculo);
 
     public void veiculoRemovido(String id);
 

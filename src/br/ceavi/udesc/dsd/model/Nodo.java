@@ -1,33 +1,30 @@
 package br.ceavi.udesc.dsd.model;
 
-import br.ceavi.udesc.dsd.view.ObservadorDesenho;
-import java.util.List;
+import br.ceavi.udesc.dsd.Main;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Andrew Vinicius da Silva Baasch, Jeferson Penz
  * @version 1.0
  * @created 25-ago-2019 12:32:30 PM
  */
-public abstract class Nodo implements ObservadoDesenho {
-    
-    private List<ObservadorDesenho> obsDesenho;
+public abstract class Nodo {
 
     private String id;
     private int posX;
     private int posY;
-    private Veiculo veiculoPresente;
-    private Nodo nodoAdjacentes;
+    private Map<Direcao, Veiculo> veiculoPresente;
+    private Map<Direcao, Nodo> nodoAdjacentes;
+    private boolean borda;
+    private boolean cruzamento;
+    private Direcao direcaoInicial;
 
     public Nodo() {
-
-    }
-
-    public List<ObservadorDesenho> getObsDesenho() {
-        return obsDesenho;
-    }
-
-    public void setObsDesenho(List<ObservadorDesenho> obsDesenho) {
-        this.obsDesenho = obsDesenho;
+        this.id = "Nodo " + Main.getInstance().getNewIdNodo();
+        this.veiculoPresente = new HashMap<>();
+        this.nodoAdjacentes = new HashMap<>();
     }
 
     public String getId() {
@@ -54,30 +51,86 @@ public abstract class Nodo implements ObservadoDesenho {
         this.posY = posY;
     }
 
-    public Veiculo getVeiculoPresente() {
+    public boolean isVeiculoPresente(Direcao direcao) {
+        if(this.isCruzamento()){
+            return !getVeiculoPresente().isEmpty();
+        }
+        return getVeiculoPresente().containsKey(direcao);
+    }
+
+    public void adicionaVeiculo(Direcao direcao, Veiculo veiculo) {
+        this.getVeiculoPresente().put(direcao, veiculo);
+    }
+    
+    public void removeVeiculo(Direcao direcao){
+        this.getVeiculoPresente().remove(direcao);
+    }
+    
+    public void limpaVeiculos(){
+        this.veiculoPresente = new HashMap<>();
+    }
+    
+    public void limpaNodosAdjacentes(){
+        this.nodoAdjacentes = new HashMap<>();
+    }
+
+    public void addNodoAdjacente(Direcao direcao, Nodo nodo) {
+        this.getNodoAdjacentes().put(direcao, nodo);
+//        if(!nodo.hasNodoAdjacente(this)){
+//            nodo.addNodoAdjacente(direcao.getDirecaoOposta(), this);
+//        }
+    }
+
+    public Map<Direcao, Veiculo> getVeiculoPresente() {
         return veiculoPresente;
     }
-
-    public void setVeiculoPresente(Veiculo veiculoPresente) {
-        this.veiculoPresente = veiculoPresente;
-    }
-
-    public Nodo getNodoAdjacentes() {
-        return nodoAdjacentes;
-    }
-
-    public void setNodoAdjacentes(Nodo nodoAdjacentes) {
-        this.nodoAdjacentes = nodoAdjacentes;
+    
+    public Set<Direcao> getDirecoesDisponiveis(){
+        return this.getNodoAdjacentes().keySet();
     }
     
-    public void adicionaObsDesenho(ObservadorDesenho obs){
-        this.obsDesenho.add(obs);
+//    public boolean hasNodoAdjacente(Nodo nodo){
+//        return this.getNodoAdjacentes().containsValue(nodo);
+//    }
+    
+    public Nodo getProximoNodo(Direcao direcao){
+        return this.getNodoAdjacentes().get(direcao);
     }
     
+    public Map<Direcao, Nodo> getNodoAdjacentes(){
+        return this.nodoAdjacentes;
+    }
+    
+    public void setBorda(boolean borda){
+        this.borda = borda;
+    }
+
+    public boolean isBorda() {
+        return borda;
+    }
+
+    public boolean isCruzamento() {
+        return cruzamento;
+    }
+
+    public void setCruzamento(boolean cruzamento) {
+        this.cruzamento = cruzamento;
+    }
+
+    public Direcao getDirecaoInicial() {
+        if(this.direcaoInicial == null){
+            for (Direcao proxDirecao : this.getDirecoesDisponiveis()) {
+                if(this.getProximoNodo(proxDirecao) != null){
+                    this.direcaoInicial = proxDirecao;
+                    break;
+                }
+            }
+        }
+        return this.direcaoInicial;
+    }
+
     @Override
-    public void notificaDesenhoAlterado() {
-        this.obsDesenho.forEach((obs) -> {
-            obs.desenhoAlterado();
-        });
+    public String toString() {
+        return posX + ", " + posY;
     }
 }

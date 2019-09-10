@@ -11,8 +11,19 @@ public class TelaConfiguracoes extends JFrame {
 
     public PainelConfiguracoes configuracao;
 
-    public TelaConfiguracoes() {
+    public TelaConfiguracoes(TelaPrincipal telaPrincipal) {
+        this.iniciaConfiguracoes();
+        this.iniciaComponentes(telaPrincipal);
+    }
+    
+    private void iniciaConfiguracoes(){
+        this.setResizable(false);
+        this.setSize(500, 400);
+    }
 
+    private void iniciaComponentes(TelaPrincipal telaPrincipal) {
+        this.configuracao = new PainelConfiguracoes(telaPrincipal);
+        this.add(this.configuracao);
     }
 
 }
