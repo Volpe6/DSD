@@ -21,7 +21,7 @@ public abstract class Veiculo {
         this.direcao = nodo.getDirecaoInicial();
         nodo.adicionaVeiculo(direcao, this);
         this.nodoAtual = nodo;
-        this.tempoMovimento = (int)(Math.random() * 75) + 25;
+        this.tempoMovimento = (int)(Math.random() * 75) + 100;
     }
 
     public Point getPosicao() {

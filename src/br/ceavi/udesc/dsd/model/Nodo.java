@@ -20,13 +20,22 @@ public abstract class Nodo {
     private boolean borda;
     private boolean cruzamento;
     private Direcao direcaoInicial;
-
+    private int numero;
+    
     public Nodo() {
         this.id = "Nodo " + Main.getInstance().getNewIdNodo();
         this.veiculoPresente = new HashMap<>();
         this.nodoAdjacentes = new HashMap<>();
     }
 
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+    
+    public int getNumero() {
+        return numero;
+    }
+    
     public String getId() {
         return id;
     }

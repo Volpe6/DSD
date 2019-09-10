@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, ObservadorEstadoVeiculo, Runnable {
 
-    private String malha;
+    private int[][] malha;
     private Malha modelMalha;
     private List<ObservadorMalha> obsMalha;
     private List<ObservadorDesenho> obsDesenho;
@@ -79,20 +80,38 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
     public void carregaMalha() throws FileNotFoundException {
         this.carregaMalha(null);
     }
-
     
-    public void carregaMalha(File arquivoMalha) throws FileNotFoundException {
-        this.recarregaMalha();
-        
-        try {
-        
-            BufferedReader bf = new BufferedReader(new FileReader(arquivoMalha));
+    public int getQtdLinhasMalha() {
+        return malha.length;
+    }
+    
+    public int getQtdColunasMalha() {
+        return malha[0].length;
+    }
 
-            int linha  = Integer.parseInt(bf.readLine());
-            int coluna = Integer.parseInt(bf.readLine());
+    private void lerArquivo(File arquivo) {
+        if(arquivo == null) {
+            return;
+        }
+        try {
+            BufferedReader bf = new BufferedReader(new FileReader(arquivo));
+
+            String n1 = bf.readLine();
+            String n2 = bf.readLine();
+            
+            if(n1.contains("\t")) {
+                n1 = n1.replace("\t", "");
+            }
+            
+            if(n2.contains("\t")) {
+                n2 = n2.replace("\t", "");
+            }
+            
+            int linha  = Integer.parseInt(n1);
+            int coluna = Integer.parseInt(n2);
 
             int[][] mat = new int [linha][coluna];
-
+            
             int cont = 0;
             while(bf.ready()) {
                 String[] sLinha = bf.readLine().split("\t");
@@ -102,14 +121,30 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                 cont++;
             }
             
+            malha = mat;
+            
             matrizTemp = new String[mat.length][mat[0].length];// contem os id
               
 //            int[][] matrizTemp = new int[mat.length][mat[0].length];// contem os id
+
+
+            for(int k = 0; k<mat.length; k++) {
+                for(int l = 0; l < mat[0].length; l++) {
+                    System.out.print(mat[k][l] + "\t");
+                }
+                System.out.println("");
+            }
+            
+//            int iasasa = mat[13][19];
 
             Nodo nodoAtual = null;
             for(int i = 0; i < mat.length; i++ ) {
                 for(int j = 0; j < mat[0].length; j++) {
                     if(mat[i][j] > 0) {
+                        
+//                        if(i == 15 && j == 12) {
+//                            int asas = 0;
+//                        }
                         
                         switch(mat[i][j]) {
                             case 1:
@@ -122,6 +157,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
                             case 2:
@@ -135,6 +171,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
                             case 3:
@@ -148,6 +185,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
                             case 4:
@@ -160,6 +198,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
                             case 5:
@@ -172,6 +211,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
@@ -186,6 +226,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
@@ -201,6 +242,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
@@ -214,6 +256,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  }
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
@@ -236,8 +279,9 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();                                
+                                 matrizTemp[i][j] = nodoAtual.getId();             
                                  break;
                             case 10://Cruzamento Cima e Esquerda
                                   nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
@@ -257,6 +301,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
@@ -281,6 +326,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
@@ -302,23 +348,33 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
                                  
                                  nodoAtual.setPosX(i);
                                  nodoAtual.setPosY(j);
+                                 nodoAtual.setNumero(mat[i][j]);
                                  nodoAtual.setCruzamento(true);
                                  matrizTemp[i][j] = nodoAtual.getId();
                                 break;
                         }
                         
                     } else {
-                        
+                        System.out.print("0" + "\t");
                         matrizTemp[i][j] = "0";
                         
                     }
                 }
             }
-            int i = 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void carregaMalha(File arquivoMalha) throws FileNotFoundException {
+        this.recarregaMalha();
+            
+        lerArquivo(arquivoMalha);
         
+        this.notificaMalhaCarregada();
+        this.notificaDesenhoAlterado();
+
+       
 //        int[][] matrizTemp = new int[mat.length][mat[0].length];// contem os id
 //        
 //        Nodo nodoAtual = null;
@@ -362,6 +418,10 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
 //        this.notificaDesenhoAlterado();
     }
 
+    public Nodo getNodo(String id) {
+        return modelMalha.getNodo(id);
+    }
+    
     public void criaVeiculo() {
         Veiculo veiculo = this.modelMalha.criaVeiculo();
         if(veiculo != null){
@@ -422,6 +482,7 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
         if(this.modelMalha.getTamanho() == 0){
             return;
         }
+        this.modelMalha.limpaVeiculos();
         Main.getInstance().setRodando(true);
         Thread threadExecucao = new Thread(this);
         threadExecucao.start();

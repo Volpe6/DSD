@@ -90,10 +90,10 @@ public class PainelMalha extends JPanel implements ObservadorMalha, ObservadorDe
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(this.getWidth() > this.getHeight()){
-            Main.getInstance().setTamanhoBlocoGrid(this.getHeight() / Main.TAMANHO_MALHA_TESTE);
+            Main.getInstance().setTamanhoBlocoGrid(this.getHeight() / /*controlador.getQtdLinhasMalha()*/25);
         }
         else {
-            Main.getInstance().setTamanhoBlocoGrid((this.getWidth() + 10)/ Main.TAMANHO_MALHA_TESTE);
+            Main.getInstance().setTamanhoBlocoGrid((this.getWidth() + 10)/ /*controlador.getQtdColunasMalha()*/25);
         }
         this.nodos.forEach((nodo) -> {
             nodo.desenha((Graphics2D) g);
