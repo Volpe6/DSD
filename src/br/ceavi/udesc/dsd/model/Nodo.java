@@ -85,9 +85,6 @@ public abstract class Nodo {
 
     public void addNodoAdjacente(Direcao direcao, Nodo nodo) {
         this.getNodoAdjacentes().put(direcao, nodo);
-//        if(!nodo.hasNodoAdjacente(this)){
-//            nodo.addNodoAdjacente(direcao.getDirecaoOposta(), this);
-//        }
     }
 
     public Map<Direcao, Veiculo> getVeiculoPresente() {
@@ -97,10 +94,6 @@ public abstract class Nodo {
     public Set<Direcao> getDirecoesDisponiveis(){
         return this.getNodoAdjacentes().keySet();
     }
-    
-//    public boolean hasNodoAdjacente(Nodo nodo){
-//        return this.getNodoAdjacentes().containsValue(nodo);
-//    }
     
     public Nodo getProximoNodo(Direcao direcao){
         return this.getNodoAdjacentes().get(direcao);

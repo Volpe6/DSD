@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -107,7 +108,7 @@ public class TelaPrincipal extends JFrame implements ObservadorConfiguracoes{
             File arquivo = escolheMalha.getSelectedFile();
             try {
                 malha.recriaMalha(arquivo);
-            } catch (FileNotFoundException ex) {
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Arquivo não encontrado ou não pode ser lido.");
             }
         }
@@ -117,6 +118,6 @@ public class TelaPrincipal extends JFrame implements ObservadorConfiguracoes{
     public void configuracaoAlterada() {
         try {
             this.malha.recriaMalha();
-        } catch (FileNotFoundException ex) {}
+        } catch (IOException ex) {}
     }
 }

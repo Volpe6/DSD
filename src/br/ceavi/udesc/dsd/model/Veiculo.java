@@ -15,26 +15,34 @@ public abstract class Veiculo {
     private Nodo nodoAtual;
     private Direcao direcao;
     private int tempoMovimento;
+    
+    public static final int TEMPO_ATUALIZACAO_VEICULO = 100;
 
     public Veiculo(Nodo nodo) {
         this.id = "Veiculo " + Main.getInstance().getNewIdVeiculo();
         this.direcao = nodo.getDirecaoInicial();
         nodo.adicionaVeiculo(direcao, this);
         this.nodoAtual = nodo;
-        this.tempoMovimento = (int)(Math.random() * 75) + 100;
+        this.tempoMovimento = (int)(Math.random() * 75) + Veiculo.TEMPO_ATUALIZACAO_VEICULO;
     }
 
     public Point getPosicao() {
-        return new Point(this.nodoAtual.getPosX(), this.nodoAtual.getPosY());
+        return new Point(this.getNodoAtual().getPosX(), this.getNodoAtual().getPosY());
     }
     
     public boolean moveVeiculo() throws InterruptedException{
         Nodo nodoCruzamento = null;
         Nodo proximoNodo = this.getNodoAtual().getProximoNodo(this.getDirecao());
         Direcao proximaDirecao = this.getDirecao();
-        if(proximoNodo == null){
-            this.getNodoAtual().removeVeiculo(getDirecao());
-            return false;
+        if(proximoNodo == null ){
+            if(this.getNodoAtual().getDirecoesDisponiveis().size() > 0){
+                proximaDirecao = this.getDirecaoAleatoria(this.getNodoAtual().getDirecoesDisponiveis());
+                proximoNodo = this.getNodoAtual().getProximoNodo(proximaDirecao);
+            }
+            else {
+                this.getNodoAtual().removeVeiculo(getDirecao());
+                return false;
+            }
         }
         if(proximoNodo.isCruzamento()){
             nodoCruzamento = proximoNodo;

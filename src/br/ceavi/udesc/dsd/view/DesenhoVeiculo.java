@@ -36,15 +36,10 @@ public class DesenhoVeiculo extends Desenho {
         if(posicao == null || direcao == null){
             return;
         }
-        int posX = posicao.x * grid + (direcao.getMulX() * (grid / 2));
-        int posY = posicao.y * grid + (direcao.getMulY() * (grid / 2));
-        g.fillOval(posX, posY, grid / 2, grid / 2);
+        int posX = posicao.x * grid;
+        int posY = posicao.y * grid;
+        g.fillOval(posX, posY, grid, grid);
         
-        if(getPosicao().x == 12 && getPosicao().y == 18 ) {
-            int iasds = 0;
-        }
-        
-        System.out.println("" + "x"+ getPosicao().x + "y" + getPosicao().y + "direcao" + getDirecao());
         if(Main.DEPURANDO){
             this.desenhaId(g, posX, posY);
         }

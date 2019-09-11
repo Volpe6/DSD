@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,12 +54,12 @@ public class PainelMalha extends JPanel implements ObservadorMalha, ObservadorDe
         this.controlador.iniciaSimulacao();
     }
 
-    public void recriaMalha(File arquivoMalha) throws FileNotFoundException {
+    public void recriaMalha(File arquivoMalha) throws FileNotFoundException, IOException {
         this.finalizaSimulacao();
         this.controlador.carregaMalha(arquivoMalha);
     }
 
-    public void recriaMalha() throws FileNotFoundException {
+    public void recriaMalha() throws FileNotFoundException, IOException {
         this.finalizaSimulacao();
         this.controlador.carregaMalha();
     }

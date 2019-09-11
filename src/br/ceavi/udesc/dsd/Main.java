@@ -14,7 +14,7 @@ public class Main {
     public static final int TEMPO_ATUALIZACAO = 16; // 16 Atualizações por segundo
     public static final String TITULO_APP = "Malha Viária";
     public static final int TAMANHO_MALHA_TESTE = 20;
-    public static final boolean DEPURANDO = true;
+    public static final boolean DEPURANDO = false;
     
     private static Main instance;
     private boolean rodando;

@@ -12,8 +12,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,22 +30,21 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
     private List<ObservadorMalha> obsMalha;
     private List<ObservadorDesenho> obsDesenho;
     public static final int TEMPO_CRIACAO_VEICULO = 10;
-    
-    
-    private String [][] matrizTemp;
-    
-    public ControladorMalha(){
+
+    private String[][] matrizTemp;
+
+    public ControladorMalha() {
         this.obsMalha = new ArrayList<>();
         this.obsDesenho = new ArrayList<>();
         this.modelMalha = new Malha();
         this.modelMalha.addObservadorEstadoVeiculo(this);
     }
-    
-    public void adicionaObsMalha(ObservadorMalha obs){
+
+    public void adicionaObsMalha(ObservadorMalha obs) {
         this.obsMalha.add(obs);
     }
-    
-    public void adicionaObsDesenho(ObservadorDesenho obs){
+
+    public void adicionaObsDesenho(ObservadorDesenho obs) {
         this.obsDesenho.add(obs);
     }
 
@@ -76,360 +75,213 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
             obs.desenhoAlterado();
         });
     }
-    
-    public void carregaMalha() throws FileNotFoundException {
+
+    public void carregaMalha() throws FileNotFoundException, IOException {
         this.carregaMalha(null);
     }
-    
+
     public int getQtdLinhasMalha() {
         return malha.length;
     }
-    
+
     public int getQtdColunasMalha() {
         return malha[0].length;
     }
 
-    private void lerArquivo(File arquivo) {
-        if(arquivo == null) {
-            return;
-        }
-        try {
-            BufferedReader bf = new BufferedReader(new FileReader(arquivo));
+    private void lerArquivo(File arquivo) throws IOException {
+        int[][] mat;
+        if (arquivo == null) {
+            mat = this.malha;
+            if(mat == null){
+                return;
+            }
+        } else {
+            BufferedReader bf;
+            bf = new BufferedReader(new FileReader(arquivo));
 
             String n1 = bf.readLine();
             String n2 = bf.readLine();
-            
-            if(n1.contains("\t")) {
+
+            if (n1.contains("\t")) {
                 n1 = n1.replace("\t", "");
             }
-            
-            if(n2.contains("\t")) {
+
+            if (n2.contains("\t")) {
                 n2 = n2.replace("\t", "");
             }
-            
-            int linha  = Integer.parseInt(n1);
+
+            int linha = Integer.parseInt(n1);
             int coluna = Integer.parseInt(n2);
 
-            int[][] mat = new int [linha][coluna];
-            
+            mat = new int[linha][coluna];
+
             int cont = 0;
-            while(bf.ready()) {
+            while (bf.ready()) {
                 String[] sLinha = bf.readLine().split("\t");
-                for(int i = 0; i < sLinha.length; i++) {
+                for (int i = 0; i < sLinha.length; i++) {
                     mat[cont][i] = Integer.parseInt(sLinha[i]);
                 }
                 cont++;
             }
-            
-            malha = mat;
-            
-            matrizTemp = new String[mat.length][mat[0].length];// contem os id
-              
-//            int[][] matrizTemp = new int[mat.length][mat[0].length];// contem os id
+        }
 
+        this.malha = mat;
+        this.matrizTemp = new String[mat.length][mat[0].length];
 
-            for(int k = 0; k<mat.length; k++) {
-                for(int l = 0; l < mat[0].length; l++) {
-                    System.out.print(mat[k][l] + "\t");
+        for (int linha = 0; linha < mat.length; linha++) {
+            for (int coluna = 0; coluna < mat[linha].length; coluna++) {
+                Nodo nodoAtual = this.criaNodoLinhaColuna(mat, linha, coluna);
+                if (nodoAtual != null) {
+                    nodoAtual.setPosX(coluna);
+                    nodoAtual.setPosY(linha);
+                    nodoAtual.setNumero(mat[linha][coluna]);
+                    matrizTemp[linha][coluna] = nodoAtual.getId();
                 }
-                System.out.println("");
-            }
-            
-//            int iasasa = mat[13][19];
-
-            Nodo nodoAtual = null;
-            for(int i = 0; i < mat.length; i++ ) {
-                for(int j = 0; j < mat[0].length; j++) {
-                    if(mat[i][j] > 0) {
-                        
-//                        if(i == 15 && j == 12) {
-//                            int asas = 0;
-//                        }
-                        
-                        switch(mat[i][j]) {
-                            case 1:
-                                 nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 if(i != 0) {
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoAnterior != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.NORTE, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 2:
-                                 nodoAtual = this.modelMalha.criaNodo((j == mat[0].length - 1 || j == 0));
-                                 if(j != 0) {// se for zero é borda
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoAnterior != null) {
-                                        nodoAnterior.addNodoAdjacente(Direcao.LESTE, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 3:
-                                 nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 if(i != 0) {// se for zero é borda
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoAnterior != null) {
-                                        nodoAnterior.addNodoAdjacente(Direcao.SUL, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 4:
-                                 nodoAtual = this.modelMalha.criaNodo((j == mat[0].length - 1 || j == 0));
-                                 if(j != 0) {// se for zero é borda
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoAnterior != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.OESTE, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 5:
-                                nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 if(i != 0) {
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoAnterior != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.NORTE, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 6:
-                                nodoAtual = this.modelMalha.criaNodo((j == mat[0].length - 1 || j == 0));
-                                 if(j != 0) {// se for zero é borda
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoAnterior != null) {
-                                        nodoAnterior.addNodoAdjacente(Direcao.LESTE, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 7:
-                                ///////////
-                                nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 if(i != 0) {// se for zero é borda
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoAnterior != null) {
-                                        nodoAnterior.addNodoAdjacente(Direcao.SUL, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 8:
-                                nodoAtual = this.modelMalha.criaNodo((j == mat[0].length - 1 || j == 0));
-                                 if(j != 0) {// se for zero é borda
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoAnterior != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.OESTE, nodoAnterior);
-                                     }
-                                 }
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 9://Cruzamento Cima e Direita
-                                 nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 
-                                 if(i != 0) {// se for zero é borda
-                                     Nodo nodoAcima = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoAcima != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.NORTE, nodoAcima);
-                                     }
-                                      
-                                     Nodo nodoEsquerdo = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoEsquerdo != null) {
-                                        nodoEsquerdo.addNodoAdjacente(Direcao.LESTE, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                 }
-                                 
-                                 
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();             
-                                 break;
-                            case 10://Cruzamento Cima e Esquerda
-                                  nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 
-                                 if(i != 0) {// se for zero é borda
-                                     Nodo nodoCima = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoCima != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.NORTE, nodoCima);
-                                     }
-                                      
-                                     Nodo nodoAnterior = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoAnterior != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.OESTE, nodoAnterior);
-                                     }
-                                 }
-                                 
-                                 
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 11://Cruzamento Direita e Baixo
-                                 nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 
-                                 if(i != 0) {// se for zero é borda
-                                     Nodo nodoCima = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoCima != null) {
-                                        nodoCima.addNodoAdjacente(Direcao.SUL, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                     
-                                     
-                                     Nodo nodoEsquerdo = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoEsquerdo != null) {
-                                        nodoEsquerdo.addNodoAdjacente(Direcao.LESTE, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                 }
-                                 
-                                 
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                            case 12://Cruzamento Baixo e Esquerda
-                                 nodoAtual = this.modelMalha.criaNodo((i == mat.length - 1 || i == 0));
-                                 
-                                 if(i != 0) {// se for zero é borda
-                                     Nodo nodoCima = modelMalha.getNodo(matrizTemp[i-1][j]);
-                                     if(nodoCima != null) {
-                                        nodoCima.addNodoAdjacente(Direcao.SUL, nodoAtual);
-                                        //nodoAtual.addNodoAdjacente(Direcao.SUL, nodoAnterior);
-                                     }
-                                     
-                                     Nodo nodoEsquerdo = modelMalha.getNodo(matrizTemp[i][j-1]);
-                                     if(nodoEsquerdo != null) {
-                                        nodoAtual.addNodoAdjacente(Direcao.OESTE, nodoEsquerdo);
-                                     }
-                                 }
-                                 
-                                 nodoAtual.setPosX(i);
-                                 nodoAtual.setPosY(j);
-                                 nodoAtual.setNumero(mat[i][j]);
-                                 nodoAtual.setCruzamento(true);
-                                 matrizTemp[i][j] = nodoAtual.getId();
-                                break;
-                        }
-                        
-                    } else {
-                        System.out.print("0" + "\t");
-                        matrizTemp[i][j] = "0";
-                        
-                    }
+                else {
+                    matrizTemp[linha][coluna] = "0";
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
-    
-    public void carregaMalha(File arquivoMalha) throws FileNotFoundException {
-        this.recarregaMalha();
-            
-        lerArquivo(arquivoMalha);
         
+    public Nodo criaNodoLinhaColuna(int[][] mat, int linha, int coluna){
+        Nodo nodoAtual     = null;
+        int val = mat[linha][coluna];
+        if (val > 0) {
+            Nodo proximoNodo1;
+            Nodo proximoNodo2;
+            switch (val) {
+                case 1:
+                    nodoAtual = this.modelMalha.criaNodo((linha == mat.length - 1 || linha == 0));
+                    if (linha != 0) {
+                        proximoNodo1 = modelMalha.getNodo(matrizTemp[linha - 1][coluna]);
+                        if (proximoNodo1 != null) {
+                            nodoAtual.addNodoAdjacente(Direcao.NORTE, proximoNodo1);
+                        }
+                    }
+                    break;
+                case 2:
+                    nodoAtual = this.modelMalha.criaNodo((coluna == mat.length - 1 || coluna == 0));
+                    break;
+                case 3:
+                    nodoAtual = this.modelMalha.criaNodo((linha == mat.length - 1 || linha == 0));
+                    break;
+                case 4:
+                    nodoAtual = this.modelMalha.criaNodo((coluna == mat[0].length - 1 || coluna == 0));
+                    if (coluna != 0) {// se for zero é borda
+                        proximoNodo1 = modelMalha.getNodo(matrizTemp[linha][coluna - 1]);
+                        if (proximoNodo1 != null) {
+                            nodoAtual.addNodoAdjacente(Direcao.OESTE, proximoNodo1);
+                        }
+                    }
+                    break;
+                case 5:
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    proximoNodo1 = modelMalha.getNodo(matrizTemp[linha - 1][coluna]);
+                    if (proximoNodo1 != null) {
+                        nodoAtual.addNodoAdjacente(Direcao.NORTE, proximoNodo1);
+                    }
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 6:
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 7:
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 8:
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    proximoNodo1 = modelMalha.getNodo(matrizTemp[linha][coluna - 1]);
+                    if (proximoNodo1 != null) {
+                        nodoAtual.addNodoAdjacente(Direcao.OESTE, proximoNodo1);
+                    }
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 9://Cruzamento Cima e Direita
+                    nodoAtual = this.modelMalha.criaNodo(false);
+
+                    proximoNodo1 = modelMalha.getNodo(matrizTemp[linha - 1][coluna]);
+                    if (proximoNodo1 != null) {
+                        nodoAtual.addNodoAdjacente(Direcao.NORTE, proximoNodo1);
+                    }
+                    
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 10://Cruzamento Cima e Esquerda
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    proximoNodo1 = modelMalha.getNodo(matrizTemp[linha - 1][coluna]);
+                    if (proximoNodo1 != null) {
+                        nodoAtual.addNodoAdjacente(Direcao.NORTE, proximoNodo1);
+                    }
+
+                    proximoNodo2 = modelMalha.getNodo(matrizTemp[linha][coluna - 1]);
+                    if (proximoNodo2 != null) {
+                        nodoAtual.addNodoAdjacente(Direcao.OESTE, proximoNodo2);
+                    }
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 11:
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    nodoAtual.setCruzamento(true);
+                    break;
+                case 12://Cruzamento Baixo e Esquerda
+                    nodoAtual = this.modelMalha.criaNodo(false);
+                    
+                    proximoNodo1 = modelMalha.getNodo(matrizTemp[linha][coluna - 1]);
+                    if (proximoNodo1 != null) {
+                        nodoAtual.addNodoAdjacente(Direcao.OESTE, proximoNodo1);
+                    }
+                    
+                    nodoAtual.setCruzamento(true);
+                    break;
+            }
+            if(linha > 0){
+                Nodo nodoAnterior  = modelMalha.getNodo(matrizTemp[linha - 1][coluna]);
+                if(nodoAnterior != null && isNodoDesce(nodoAnterior.getNumero())){
+                    nodoAnterior.addNodoAdjacente(Direcao.SUL, nodoAtual);
+                }
+            }
+            if(coluna > 0){
+                Nodo nodoAnterior2 = modelMalha.getNodo(matrizTemp[linha][coluna - 1]);
+                if(nodoAnterior2 != null && isNodoDireita(nodoAnterior2.getNumero())){
+                    nodoAnterior2.addNodoAdjacente(Direcao.LESTE, nodoAtual);
+                }
+            }
+        }
+        return nodoAtual;
+    }
+    
+    public boolean isNodoDesce(int valor){
+        return valor == 3 || valor == 7 || valor == 11 || valor == 12;
+    }
+    
+    public boolean isNodoDireita(int valor){
+        return valor == 2 || valor == 6 || valor == 9 || valor == 11;
+    }
+
+    public void carregaMalha(File arquivoMalha) throws FileNotFoundException, IOException {
+        this.recarregaMalha();
+
+        lerArquivo(arquivoMalha);
+
         this.notificaMalhaCarregada();
         this.notificaDesenhoAlterado();
-
-       
-//        int[][] matrizTemp = new int[mat.length][mat[0].length];// contem os id
-//        
-//        Nodo nodoAtual = null;
-//        for(int i = 0; i < mat.length; i++ ) {
-//            for(int k = 0; k < mat[0].length; k++) {
-//                
-//            }
-//        }
-//        
-//        
-//        Nodo nodoAtual = null;
-//        for (int i = 0; i < Main.TAMANHO_MALHA_TESTE; i++) {
-//            Nodo nodo = this.modelMalha.criaNodo(nodoAtual == null || i == Main.TAMANHO_MALHA_TESTE - 1);
-//            if(nodoAtual != null){
-//                nodo.addNodoAdjacente(Direcao.OESTE, nodoAtual);
-//            }
-//            nodoAtual = nodo;
-//            nodo.setPosX(i);
-//            nodo.setPosY(5);
-//            if(i == 4 || i == 9){
-//                nodo.setCruzamento(true);
-//                Nodo nodoVAtual = nodo;
-//                for (int j = 0; j < 5; j++) {
-//                    Nodo nodoV = this.modelMalha.criaNodo(j == 0);
-//                    nodoV.addNodoAdjacente(Direcao.NORTE, nodoVAtual);
-//                    nodoVAtual = nodoV;
-//                    nodoV.setPosX(i);
-//                    nodoV.setPosY(j);
-//                }
-//                nodoVAtual = nodo;
-//                for (int j = 6; j < Main.TAMANHO_MALHA_TESTE; j++) {
-//                    Nodo nodoV = this.modelMalha.criaNodo(j == Main.TAMANHO_MALHA_TESTE - 1);
-//                    nodoV.addNodoAdjacente(Direcao.NORTE, nodoVAtual);
-//                    nodoVAtual = nodoV;
-//                    nodoV.setPosX(i);
-//                    nodoV.setPosY(j);
-//                }
-//            }
-//        }
-//        this.notificaMalhaCarregada();
-//        this.notificaDesenhoAlterado();
     }
 
     public Nodo getNodo(String id) {
         return modelMalha.getNodo(id);
     }
-    
+
     public void criaVeiculo() {
         Veiculo veiculo = this.modelMalha.criaVeiculo();
-        if(veiculo != null){
+        if (veiculo != null) {
             this.notificaVeiculoCriado(this.iniciaControlador(veiculo));
         }
     }
-    
-    private ControladorVeiculo iniciaControlador(Veiculo veiculo){
+
+    private ControladorVeiculo iniciaControlador(Veiculo veiculo) {
         ControladorVeiculo controlador = new ControladorVeiculo(veiculo);
         controlador.addObservador(this);
         Thread thread = new Thread(controlador);
@@ -455,15 +307,15 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
 
     public Point getPosicaoNodo(String id) {
         Nodo nodo = this.modelMalha.getNodo(id);
-        if(nodo == null){
+        if (nodo == null) {
             return new Point(0, 0);
         }
         return new Point(nodo.getPosX(), nodo.getPosY());
     }
-    
-    public Map<Direcao, ControladorVeiculo> getControladoresVeiculos(String id){
+
+    public Map<Direcao, ControladorVeiculo> getControladoresVeiculos(String id) {
         Nodo nodo = this.modelMalha.getNodo(id);
-        if(nodo == null){
+        if (nodo == null) {
             return new HashMap<>();
         }
         Map<Direcao, ControladorVeiculo> controladores = new HashMap<>();
@@ -476,10 +328,10 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
     }
 
     public void iniciaSimulacao() {
-        if(Main.getInstance().isRodando()){
+        if (Main.getInstance().isRodando()) {
             return;
         }
-        if(this.modelMalha.getTamanho() == 0){
+        if (this.modelMalha.getTamanho() == 0) {
             return;
         }
         this.modelMalha.limpaVeiculos();
@@ -495,8 +347,8 @@ public class ControladorMalha implements ObservadoMalha, ObservadoDesenho, Obser
 
     @Override
     public void run() {
-        while(Main.getInstance().isRodando()){
-            if(this.modelMalha.getTotalVeiculos() < this.modelMalha.getConfiguracao().getQtdVeiculos()){
+        while (Main.getInstance().isRodando()) {
+            if (this.modelMalha.getTotalVeiculos() < this.modelMalha.getConfiguracao().getQtdVeiculos()) {
                 this.criaVeiculo();
             }
             this.notificaDesenhoAlterado();
